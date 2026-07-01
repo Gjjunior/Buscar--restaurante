@@ -8,6 +8,25 @@ import {
 
 export default function ConfirmacaoScreen({ route, navigation }) {
 
+  const params = route?.params;
+
+  if (!params) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.titulo}>Nenhuma reserva encontrada.</Text>
+
+        <TouchableOpacity
+          style={styles.botao}
+          onPress={() => navigation?.navigate('Home')}
+        >
+          <Text style={styles.textoBotao}>
+            Voltar ao Início
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   const {
     restaurante,
     nome,
@@ -15,10 +34,9 @@ export default function ConfirmacaoScreen({ route, navigation }) {
     data,
     horario,
     pessoas,
-  } = route.params;
+  } = params;
 
   return (
-
     <View style={styles.container}>
 
       <Text style={styles.titulo}>
@@ -32,7 +50,7 @@ export default function ConfirmacaoScreen({ route, navigation }) {
         </Text>
 
         <Text style={styles.valor}>
-          {restaurante.nome}
+          {restaurante?.nome || 'Não informado'}
         </Text>
 
         <Text style={styles.item}>
@@ -40,7 +58,7 @@ export default function ConfirmacaoScreen({ route, navigation }) {
         </Text>
 
         <Text style={styles.valor}>
-          {nome}
+          {nome || 'Não informado'}
         </Text>
 
         <Text style={styles.item}>
@@ -48,7 +66,7 @@ export default function ConfirmacaoScreen({ route, navigation }) {
         </Text>
 
         <Text style={styles.valor}>
-          {telefone}
+          {telefone || 'Não informado'}
         </Text>
 
         <Text style={styles.item}>
@@ -56,7 +74,7 @@ export default function ConfirmacaoScreen({ route, navigation }) {
         </Text>
 
         <Text style={styles.valor}>
-          {data}
+          {data || 'Não informado'}
         </Text>
 
         <Text style={styles.item}>
@@ -64,7 +82,7 @@ export default function ConfirmacaoScreen({ route, navigation }) {
         </Text>
 
         <Text style={styles.valor}>
-          {horario}
+          {horario || 'Não informado'}
         </Text>
 
         <Text style={styles.item}>
@@ -72,24 +90,21 @@ export default function ConfirmacaoScreen({ route, navigation }) {
         </Text>
 
         <Text style={styles.valor}>
-          {pessoas}
+          {pessoas || 'Não informado'}
         </Text>
 
       </View>
 
       <TouchableOpacity
         style={styles.botao}
-        onPress={() => navigation.navigate('Home')}
+        onPress={() => navigation?.navigate('Home')}
       >
-
         <Text style={styles.textoBotao}>
           Voltar ao Início
         </Text>
-
       </TouchableOpacity>
 
     </View>
-
   );
 
 }
