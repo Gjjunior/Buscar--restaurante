@@ -10,25 +10,7 @@ import {
 
 export default function ReservaScreen({ route, navigation }) {
 
-  const restaurante = route?.params?.restaurante;
-  if (!restaurante) {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.titulo}>
-        Nenhum restaurante foi selecionado.
-      </Text>
-
-      <TouchableOpacity
-        style={styles.botao}
-        onPress={() => navigation.goBack()}
-      >
-        <Text style={styles.textoBotao}>
-          Voltar
-        </Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
+  const { restaurante } = route.params || {};
 
   const [nome, setNome] = useState('');
   const [telefone, setTelefone] = useState('');
@@ -47,7 +29,7 @@ export default function ReservaScreen({ route, navigation }) {
     ) {
       Alert.alert(
         'Atenção',
-        'Preencha todos os campos para continuar.'
+        'Preencha todos os campos.'
       );
       return;
     }
@@ -62,6 +44,25 @@ export default function ReservaScreen({ route, navigation }) {
     });
   }
 
+  if (!restaurante) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.titulo}>
+          Restaurante não encontrado.
+        </Text>
+
+        <TouchableOpacity
+          style={styles.botao}
+          onPress={() => navigation.navigate('Categorias')}
+        >
+          <Text style={styles.textoBotao}>
+            Voltar
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
 
@@ -74,7 +75,7 @@ export default function ReservaScreen({ route, navigation }) {
       </Text>
 
       <Text style={styles.subtitulo}>
-        Informe seus dados
+        Preencha seus dados
       </Text>
 
       <TextInput
@@ -94,14 +95,14 @@ export default function ReservaScreen({ route, navigation }) {
 
       <TextInput
         style={styles.input}
-        placeholder="Data da reserva (dd/mm/aaaa)"
+        placeholder="Data (dd/mm/aaaa)"
         value={data}
         onChangeText={setData}
       />
 
       <TextInput
         style={styles.input}
-        placeholder="Horário da reserva"
+        placeholder="Horário"
         value={horario}
         onChangeText={setHorario}
       />
@@ -115,33 +116,29 @@ export default function ReservaScreen({ route, navigation }) {
       />
 
       <View style={styles.aviso}>
-
         <Text style={styles.tituloAviso}>
-          ⚠️ Importante
+          ⚠ Aviso
         </Text>
 
         <Text style={styles.textoAviso}>
-          Sua reserva será mantida por até <Text style={styles.destaque}>10 minutos</Text> após o horário informado.
+          Sua reserva será mantida por até
+          <Text style={styles.destaque}> 10 minutos </Text>
+          após o horário informado.
         </Text>
 
         <Text style={styles.textoAviso}>
-          Após esse período, a mesa poderá ser disponibilizada para clientes presentes na lista de espera física do restaurante.
+          Após esse período, a mesa poderá ser disponibilizada para clientes presentes na lista de espera do restaurante.
         </Text>
-
       </View>
 
-    <TouchableOpacity
+      <TouchableOpacity
         style={styles.botao}
-        onPress={() =>
-        navigation.navigate('Reserva', {
-      restaurante: item,
-    })
-  }
->
-  <Text style={styles.textoBotao}>
-    Reservar
-  </Text>
-</TouchableOpacity>
+        onPress={confirmarReserva}
+      >
+        <Text style={styles.textoBotao}>
+          Confirmar Reserva
+        </Text>
+      </TouchableOpacity>
 
     </View>
   );
@@ -161,14 +158,14 @@ const styles = StyleSheet.create({
     color: '#FF6600',
     textAlign: 'center',
     marginTop: 20,
+    marginBottom: 20,
   },
 
   restaurante: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginTop: 10,
-    marginBottom: 20,
+    marginBottom: 25,
   },
 
   subtitulo: {
@@ -180,7 +177,7 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: '#CCCCCC',
+    borderColor: '#CCC',
     borderRadius: 8,
     height: 50,
     paddingHorizontal: 15,
@@ -193,13 +190,12 @@ const styles = StyleSheet.create({
     borderLeftColor: '#FF9800',
     padding: 15,
     borderRadius: 8,
-    marginTop: 10,
-    marginBottom: 25,
+    marginVertical: 20,
   },
 
   tituloAviso: {
-    fontSize: 16,
     fontWeight: 'bold',
+    fontSize: 16,
     marginBottom: 8,
   },
 
@@ -207,7 +203,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#444',
     lineHeight: 20,
-    marginBottom: 5,
   },
 
   destaque: {
@@ -224,7 +219,7 @@ const styles = StyleSheet.create({
   },
 
   textoBotao: {
-    color: '#FFFFFF',
+    color: '#FFF',
     fontSize: 18,
     fontWeight: 'bold',
   },
